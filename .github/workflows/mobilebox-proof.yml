@@ -1,0 +1,36 @@
+# Every pull request builds the app and smoke-tests it on a fresh Mobilebox cloud phone
+# (https://github.com/mobilebox-dev/android-smoke-action). The run posts one proof comment on the PR,
+# with the last screen, the steps, time and cost, and updates it on every push.
+name: mobilebox-proof
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pull-requests: write # the proof comment
+concurrency:
+  group: mobilebox-proof-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      MOBILESANDBOX_USER_AGENT: MobileboxInternal proof-demo # Mobilebox's own demo, kept out of its usage counts
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v6
+      - run: ./gradlew :app:assembleFossDebug
+      - id: apk
+        run: echo "path=$(ls app/build/outputs/apk/foss/debug/*.apk | head -1)" >> "$GITHUB_OUTPUT"
+      - uses: mobilebox-dev/android-smoke-action@v1
+        with:
+          apk: ${{ steps.apk.outputs.path }}
+          wait-for: '='
+          api-key: ${{ secrets.MOBILESANDBOX_API_KEY }}
