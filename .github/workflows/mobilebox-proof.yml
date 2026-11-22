@@ -26,7 +26,7 @@ jobs:
           distribution: temurin
           java-version: 17
       - uses: gradle/actions/setup-gradle@v6
-      - run: ./gradlew :app:assembleFossDebug
+      - run: ./gradlew :app:testFossDebugUnitTest :app:assembleFossDebug # unit tests first: a red test never books a phone
       - id: apk
         run: echo "path=$(ls app/build/outputs/apk/foss/debug/*.apk | head -1)" >> "$GITHUB_OUTPUT"
       - uses: actions/upload-artifact@v7 # reviewers can install the exact build the phone tested
