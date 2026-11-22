@@ -29,6 +29,11 @@ jobs:
       - run: ./gradlew :app:assembleFossDebug
       - id: apk
         run: echo "path=$(ls app/build/outputs/apk/foss/debug/*.apk | head -1)" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v7 # reviewers can install the exact build the phone tested
+        with:
+          name: calculator-debug-apk
+          path: ${{ steps.apk.outputs.path }}
+          retention-days: 14
       - uses: mobilebox-dev/android-smoke-action@v1
         with:
           apk: ${{ steps.apk.outputs.path }}
