@@ -1,4 +1,6 @@
 > **This is a demo fork by [Mobilebox](https://mobilebox.dev/?via=proof-demo).** It is [Fossify Calculator](https://github.com/FossifyOrg/Calculator), unchanged apart from one workflow: every pull request builds the app and smoke-tests it on a fresh cloud Android phone with [android-smoke-action](https://github.com/mobilebox-dev/android-smoke-action), which posts a proof comment on the PR: the last screen, the steps, the time and the cost. See the [pull requests](https://github.com/mobilebox-dev/proof-demo-calculator/pulls?q=is%3Apr) for real ones. The workflow is [.github/workflows/mobilebox-proof.yml](.github/workflows/mobilebox-proof.yml). The app stays GPL-3.0 and belongs to the Fossify team; report app issues [upstream](https://github.com/FossifyOrg/Calculator/issues).
+>
+> **Try it in your repo:** add the `MOBILESANDBOX_API_KEY` secret ([sign up](https://mobilebox.dev/signup?via=proof-demo), $2 of free credit, about 200 runs) and copy the workflow. A run takes about a minute of phone time after the build and costs $0.01. Fork PRs get no secrets, so the check runs on PRs from branches in the same repo.
 
 # Fossify Calculator
 
